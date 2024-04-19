@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+  <h1 class="text-center my-4">Tic Tac Toe</h1>
+  
+  <div id="game-board" class="text-center">
+    <div class="row">
+      <div class="col cell" id="cell-0"></div>
+      <div class="col cell" id="cell-1"></div>
+      <div class="col cell" id="cell-2"></div>
+    </div>
+    <div class="row">
+      <div class="col cell" id="cell-3"></div>
+      <div class="col cell" id="cell-4"></div>
+      <div class="col cell" id="cell-5"></div>
+    </div>
+    <div class="row">
+      <div class="col cell" id="cell-6"></div>
+      <div class="col cell" id="cell-7"></div>
+      <div class="col cell" id="cell-8"></div>
+    </div>
+  </div>
+  
+  <div id="status" class="text-center mt-4">
+    <p>Player X's Turn</p>
+  </div>
+  
+  <div id="controls" class="text-center mt-4">
+    <button id="reset-btn" class="btn btn-primary">Reset</button>
+    <button id="undo-btn" class="btn btn-secondary">Undo</button>
+    <button id="single-player-btn" class="btn btn-info">Single Player Mode</button>
+    <button id="two-player-btn" class="btn btn-info">Two Player Mode</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize variables
+    let currentPlayer = 'X';
+    let cells = document.querySelectorAll('.cell');
+    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+    let gameOver = false;
+    let lastMove = null; // Variable to store the last move for undo
+
+    // Function to handle player move
+    function handleMove(cellIndex) {
+        if (!gameOver && gameBoard[cellIndex] === '') {
+            gameBoard[cellIndex] = currentPlayer;
+            cells[cellIndex].innerText = currentPlayer;
+            lastMove = cellIndex; // Store the last move
+            if (checkWin(currentPlayer)) {
+                document.getElementById('status').innerText = `Player ${currentPlayer} wins!`;
+                gameOver = true;
+            } else if (checkDraw()) {
+                document.getElementById('status').innerText = "It's a draw!";
+                gameOver = true;
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('status').innerText = `Player ${currentPlayer}'s Turn`;
+            }
+        }
+    }
+
+    // Function to check for a win
+    function checkWin(player) {
+        const winCombos = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+        return winCombos.some(combo => combo.every(index => gameBoard[index] === player));
+    }
+
+    // Function to check for a draw
+    function checkDraw() {
+        return gameBoard.every(cell => cell !== '');
+    }
+
+    // Event listener for cell clicks
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+            handleMove(index);
+        });
+    });
+
+    // Undo button event listener
+    document.getElementById('undo-btn').addEventListener('click', () => {
+        if (lastMove !== null && !gameOver) {
+            gameBoard[lastMove] = ''; // Clear the cell
+            cells[lastMove].innerText = ''; // Clear the cell display
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Switch player
+            document.getElementById('status').innerText = `Player ${currentPlayer}'s Turn`;
+            lastMove = null; // Reset last move
+        }
+    });
+
+    // Reset button event listener
+    document.getElementById('reset-btn').addEventListener('click', () => {
+        gameBoard = ['', '', '', '', '', '', '', '', ''];
+        cells.forEach(cell => cell.innerText = '');
+        gameOver = false;
+        currentPlayer = 'X';
+        document.getElementById('status').innerText = `Player ${currentPlayer}'s Turn`;
+        lastMove = null; // Reset last move
+    });
+
+    // Single player mode button event listener
+    document.getElementById('single-player-btn').addEventListener('click', () => {
+        // Implement single player mode logic here
+        alert('Single Player Mode not yet implemented');
+    });
+
+    // Two player mode button event listener
+    document.getElementById('two-player-btn').addEventListener('click', () => {
+        // Reset the game if mode changed
+        gameBoard = ['', '', '', '', '', '', '', '', ''];
+        cells.forEach(cell => cell.innerText = '');
+        gameOver = false;
+        currentPlayer = 'X';
+        document.getElementById('status').innerText = `Player ${currentPlayer}'s Turn`;
+        lastMove = null; // Reset last move
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+body {
+    background-color: #f3f8f8;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    margin-top: 50px;
+  }
+  
+  h1 {
+    color: #190202;
+  }
+  
+  .cell {
+    border: 2px solid #03300d;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 48px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cell:hover {
+    background-color: #dee2e6;
+  }
+  
+  #game-board {
+    margin-bottom: 20px;
+  }
+  
+  #status {
+    color: #c81313;
+    font-size: 24px;
+  }
+  
+  #controls {
+    margin-top: 20px;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-info {
+    margin-right: 10px;
+  }
+  
